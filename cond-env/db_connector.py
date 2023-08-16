@@ -33,7 +33,6 @@ def get_receipt(receipt_to_get):
         with orm.db_session:
             result = Receipt.get(receipt=receipt_to_get).to_dict()
             response = {"response":"Success", "data":result}
-            print(response)
             return response
     except Exception as e:
         return {"response":"Error","error":e}
@@ -42,15 +41,21 @@ def get_receipt(receipt_to_get):
 
 #dohvaćanje svih recepata
 
-def get_receipts(receipt_to_get):
+def get_receipts():
     try:
         with orm.db_session:
-            result = Receipt.get(receipt=receipt_to_get).to_dict()
-            response = {"response":"Success", "data":result}
-            print(response)
+            result = orm.select(el for el in Receipt)[:]
+            temp_list = []
+    
+            for el in result:
+                temp_list.append(el.to_dict())
+
+            response = {"response":"Success", "data":temp_list}
+            
             return response
+        
     except Exception as e:
-        return {"response":"Error","error":e}
+        return {"response":"Error","error":str(e)}
 
 
 # uređivanje recepta / PATCH
@@ -59,7 +64,7 @@ def get_receipts(receipt_to_get):
 # brisanje recepta
 
 if __name__ == "__main__":
-    #res= add_receipt("krumpir", "jako pečeni krumpir u pećnici")
+    #res=add_receipt("piletina", "ekstra")
     #print(res)
-    res=get_receipt("krumpir")
+    res=get_receipts()
     print(res)

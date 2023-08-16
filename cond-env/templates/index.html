@@ -10,11 +10,9 @@
     <div class="main_wrapper">
       <div class="title">helo</div>
       <ul class="list">
-        {% block content %}
-
-        <li>{{data.receipt}}</li>
-
-        {% endblock %}
+        {% block content %} {% for d in data %}
+        <li>{{d.receipt}}</li>
+        {% endfor %} {% endblock %}
       </ul>
     </div>
   </body>
