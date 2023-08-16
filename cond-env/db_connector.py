@@ -28,9 +28,23 @@ def get_receipt(receipt_to_get):
         with orm.db_session:
             result = Receipt.get(receipt=receipt_to_get).to_dict()
             response = {"response":"Success", "data":result}
+            print(response)
             return response
     except Exception as e:
         return {"response":"Error","error":e}
+    
+def get_receipts(receipt_to_get):
+    try:
+        with orm.db_session:
+            result = Receipt.get(receipt=receipt_to_get).to_dict()
+            response = {"response":"Success", "data":result}
+            print(response)
+            return response
+    except Exception as e:
+        return {"response":"Error","error":e}
+
+
+
 
 if __name__ == "__main__":
     #res= add_receipt("krumpir", "jako pečeni krumpir u pećnici")
