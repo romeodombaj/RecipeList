@@ -13,6 +13,10 @@ DB.generate_mapping(create_tables=True)
 
 
 @orm.db_session
+
+
+#dodavanje recepta
+
 def add_receipt(receipt, description, price=None):
     try:
         with orm.db_session:
@@ -21,7 +25,8 @@ def add_receipt(receipt, description, price=None):
             return response
     except Exception as e:
         return {"response":"Error","error":e}
-        
+
+#dohvaćanje jednog recepta
 
 def get_receipt(receipt_to_get):
     try:
@@ -33,6 +38,10 @@ def get_receipt(receipt_to_get):
     except Exception as e:
         return {"response":"Error","error":e}
     
+
+
+#dohvaćanje svih recepata
+
 def get_receipts(receipt_to_get):
     try:
         with orm.db_session:
@@ -44,7 +53,10 @@ def get_receipts(receipt_to_get):
         return {"response":"Error","error":e}
 
 
+# uređivanje recepta / PATCH
 
+
+# brisanje recepta
 
 if __name__ == "__main__":
     #res= add_receipt("krumpir", "jako pečeni krumpir u pećnici")
