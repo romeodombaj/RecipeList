@@ -16,8 +16,8 @@
         {% block content %} {% for d in data %}
         <div class="list-item">
           <div class="item-title">{{d.receipt}}</div><div class="item-actions">
-            <div href="{{url_for("dodaj")}}" class="item-action">Uredi</div>
-            <div href="{{url_for("dodaj")}}" class="item-action">Obrisi</div>
+            <a href={{url_for("dodaj")}} class="item-action">Uredi</a>
+            <a href="/delete/{{d.id}}" class="item-action">Obrisi</a>
           </div></div>
         {% endfor %} {% endblock %}
       </div>

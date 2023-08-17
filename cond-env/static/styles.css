@@ -78,17 +78,16 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 .item-action {
   text-transform: uppercase;
+  text-decoration: none;
 }
-
 
 /* Dodaj */
 
-
 /* Uredi */
-
 
 /* Recept */

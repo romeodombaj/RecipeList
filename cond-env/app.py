@@ -51,6 +51,15 @@ def dodaj():
 #uredi recept
 
 #izbriši recept
+@app.route("/delete/<id>", methods=["POST", "GET"])
+def delete(id):
+        response = delete_receipt(id)
+
+        if response["response"] == "Success":
+                return home()
+        else:
+                return make_response(render_template("dodaj.html"))
+
 
 
 # ako se aplikacija pokreće na lokalnoj mašini

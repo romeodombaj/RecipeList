@@ -49,10 +49,10 @@ def get_receipts():
 
 #-----------------------------------------------
 #dodavanje recepta
-def add_receipt(item):
+def add_receipt(receipt):
     try:
         with orm.db_session:
-            Receipt(receipt=item["receipt"], description=item["description"])
+            Receipt(receipt=receipt["receipt"], description=receipt["description"])
             response = {"response":"Success"}
             return response
     except Exception as e:
@@ -67,6 +67,15 @@ def add_receipt(item):
 
 #-----------------------------------------------
 # brisanje recepta
+def delete_receipt(receipt):
+    try:
+        with orm.db_session:
+            Receipt.get(id=receipt).delete()
+            response = {"response": "Success"}
+            return response
+    except Exception as e:
+        return {"response": "Error", "error": str(e)}
+
 
 if __name__ == "__main__":
     #res=add_receipt("piletina", "ekstra")
