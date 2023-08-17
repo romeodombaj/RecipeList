@@ -1,11 +1,18 @@
 from pony import orm
+from datetime import date, datetime
 
 DB = orm.Database()
 
-class Receipt(DB.Entity):
+class Recipe(DB.Entity):
     id = orm.PrimaryKey(int, auto=True)
-    receipt = orm.Required(str, unique=True)
+    recipe = orm.Required(str)
+    image = orm.Required(str)
+    ingredients = orm.Required(str)
+    category = orm.Required(str)
     description = orm.Required(str)
+    create_date = orm.Required(datetime)
+    edit_date = orm.Required(datetime)
+
     
 DB.bind(provider="sqlite", filename="database.sqlite", create_db=True)
 DB.generate_mapping(create_tables=True)
@@ -15,10 +22,10 @@ DB.generate_mapping(create_tables=True)
 
 #-----------------------------------------------
 #dohvaćanje jednog recepta
-def get_receipt(receipt_to_get):
+def get_recipe(recipe_to_get):
     try:
         with orm.db_session:
-            result = Receipt.get(receipt=receipt_to_get).to_dict()
+            result = Recipe.get(recipe=recipe_to_get).to_dict()
             response = {"response":"Success", "data":result}
             return response
     except Exception as e:
@@ -29,10 +36,10 @@ def get_receipt(receipt_to_get):
 
 #-----------------------------------------------
 #dohvaćanje svih recepata
-def get_receipts():
+def get_recipes():
     try:
         with orm.db_session:
-            result = orm.select(el for el in Receipt)[:]
+            result = orm.select(el for el in Recipe)[:]
             temp_list = []
     
             for el in result:
@@ -49,11 +56,12 @@ def get_receipts():
 
 #-----------------------------------------------
 #dodavanje recepta
-def add_receipt(receipt):
+def add_recipe(recipe):
     try:
         with orm.db_session:
-            Receipt(receipt=receipt["receipt"], description=receipt["description"])
+            Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=datetime.now(), edit_date=datetime.now())
             response = {"response":"Success"}
+            print(response)
             return response
     except Exception as e:
         return {"response":"Error","error":e}
@@ -62,15 +70,22 @@ def add_receipt(receipt):
 
 #-----------------------------------------------
 # uređivanje recepta / PATCH
-
+def edit_recipe(recipe):
+    try:
+        with orm.db_session:
+            temp_recipe = Recipe.get(id=recipe).delete()
+            response = {"response": "Success"}
+            return response
+    except Exception as e:
+        return {"response": "Error", "error": str(e)}
 
 
 #-----------------------------------------------
 # brisanje recepta
-def delete_receipt(receipt):
+def delete_recipe(recipe):
     try:
         with orm.db_session:
-            Receipt.get(id=receipt).delete()
+            Recipe.get(id=recipe).delete()
             response = {"response": "Success"}
             return response
     except Exception as e:
@@ -78,7 +93,8 @@ def delete_receipt(receipt):
 
 
 if __name__ == "__main__":
-    #res=add_receipt("piletina", "ekstra")
+    temp_recipe2 = {"recipe":"piletina", "image":"image", "ingredients":"ingredients", "category":"sda sd", "description":"sdasadsfdasdsgffdsdfsdfsadfs"}
+    #res=add_recipe(temp_recipe2)
     #print(res)
-    res=get_receipts()
-    print(res)
+    #res=get_recipes()
+    #print(res)

@@ -9,10 +9,13 @@ temp_storage = []
 #dohvati sve recepte
 @app.route("/")
 def home():
-        response = get_receipts()
+        response = get_recipes()
         print(response)
-        return make_response(render_template("index.html", data=response["data"]), 200)
+        if response["response"] == "Success":
+                return make_response(render_template("index.html", data=response["data"]), 200)
 
+        else:
+                return make_response(render_template("index.html"), 200)
 
 
 #dohvati pojedinacni recept
@@ -32,18 +35,19 @@ def dodaj():
                         for key, value in request.form.items():
                                 if value == "":
                                         temp[key] = None
+                                        print("Nonemone")
                                 else:
                                         temp[key] = value
                 except Exception as e:
                         response = {"response":str(e)}
                         return(make_response(jsonify(response), 400))
                 
-                response = add_receipt(temp)
+                response = add_recipe(temp)
 
                 if response["response"] == "Success":
                         return home()        
                 else:
-                        return dodaj()
+                        return make_response(render_template("dodaj.html"), 400)        
         else:
                 return make_response(render_template("dodaj.html"), 200)        
 
@@ -56,7 +60,7 @@ def dodaj():
 #izbriši recept
 @app.route("/delete/<id>", methods=["POST", "GET"])
 def delete(id):
-        response = delete_receipt(id)
+        response = delete_recipe(id)
 
         if response["response"] == "Success":
                 return home()
