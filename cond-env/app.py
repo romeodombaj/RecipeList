@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, make_response, render_template, url_for, redirect
+from flask import Flask, jsonify, make_response, render_template, url_for, redirect, request
 from db_connector import *
 
 app = Flask(__name__)
@@ -20,6 +20,30 @@ def home():
 def getData():
         response = {"message":"Hello World"}
         return make_response(render_template("index.html"))
+
+
+@app.route("/dodaj", methods=["POST","GET"])
+def dodaj_recept():
+        if request.method == "POST":
+                try:
+                        temp = {}
+                        for key, value in request.form.items():
+                                if value == "":
+                                        temp[key] = None
+                                else:
+                                        temp[key] = value
+                except Exception as e:
+                        response = {"response":str(e)}
+                        return(make_response(jsonify(response), 400))
+                
+                response = add_receipt(temp)
+
+                if response["response"] == "Success":
+                        return make_response(render_template("dodaj.html"), 200)        
+                else:
+                        return make_response(jsonify(response), 400)
+        else:
+                return make_response(render_template("dodaj.html"), 200)        
 
 
 #dodaj novi recept
