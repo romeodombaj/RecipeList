@@ -17,10 +17,24 @@
         <div class="form-title">Dodaj Recept</div>
         <label class="form-label">Naziv recepta:</label>
         <input class="form-input" name="recipe"
-        value="{{request.form["recipe"]}}" required />
+        value="{{data.recipe}}" required />
+
+        <label class="form-label">Link slike:</label>
+        <input class="form-input" name="image"
+        value="{{data.image}}" required />
+
+        <label class="form-label">Sastojci:</label>
+        <input class="form-input" name="ingredients"
+        value="{{data.ingredients}}" required />
+
+        <label class="form-label">Kategorija:</label>
+        <input class="form-input" name="category"
+        value="{{data.category}}" required />
+
         <label class="form-label">Opis recepta:</label>
         <textarea class="form-textarea"" name="description"
-        value="{{request.form["description"]}}" required /></textarea>
+        required />{{data.description}}</textarea>
+
         <button class="button" type="submit">DODAJ</button>
       </form>
       {% endblock %}

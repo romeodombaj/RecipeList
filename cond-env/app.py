@@ -10,7 +10,6 @@ temp_storage = []
 @app.route("/")
 def home():
         response = get_recipes()
-        print(response)
         if response["response"] == "Success":
                 return make_response(render_template("index.html", data=response["data"]), 200)
 
@@ -28,7 +27,7 @@ def getData():
 
 #dodaj novi recept
 @app.route("/dodaj", methods=["POST","GET"])
-def dodaj():
+def add():
         if request.method == "POST":
                 try:
                         temp = {}
@@ -54,7 +53,35 @@ def dodaj():
 
 #uredi recept
 
+@app.route("/edit/<id>", methods=["POST", "GET"])
+def edit(id):
+        if request.method == "POST":
+                try:
+                        temp = {}
+                        for key, value in request.form.items():
+                                if value == "":
+                                        temp[key] = None
+                                else:
+                                        temp[key] = value
+                except Exception as e:
+                        response = {"response":str(e)}
+                        return (make_response(jsonify(response), 400))
+                
+                response = edit_recipe(id, temp)
 
+                if response["response"] == "Success":
+                        return home()        
+                else:
+                        return make_response(render_template("uredi.html"), 400)        
+        else:
+                 response = get_recipe(id)
+
+                 if response["response"] == "Success":
+                        return make_response(render_template("uredi.html", data=response["data"]), 200)
+                        
+
+                 else:
+                        return (make_response(jsonify(response), 400))
 
 
 #izbriši recept

@@ -22,13 +22,15 @@ DB.generate_mapping(create_tables=True)
 
 #-----------------------------------------------
 #dohvaćanje jednog recepta
-def get_recipe(recipe_to_get):
+def get_recipe(id):
     try:
         with orm.db_session:
-            result = Recipe.get(recipe=recipe_to_get).to_dict()
+
+            result = Recipe.get(id=id).to_dict()
             response = {"response":"Success", "data":result}
             return response
     except Exception as e:
+        print(e)
         return {"response":"Error","error":e}
     
 
@@ -70,10 +72,19 @@ def add_recipe(recipe):
 
 #-----------------------------------------------
 # uređivanje recepta / PATCH
-def edit_recipe(recipe):
+def edit_recipe(id, recipe):
     try:
         with orm.db_session:
-            temp_recipe = Recipe.get(id=recipe).delete()
+            
+            temp_recipe = Recipe.get(id=id)
+            temp_recipe.recipe = recipe["recipe"]
+            temp_recipe.image = recipe["image"]
+            temp_recipe.ingredients = recipe["ingredients"]
+            temp_recipe.category = recipe["category"]
+            temp_recipe.description = recipe["description"]
+            temp_recipe.edit_date = datetime.now()
+            
+            
             response = {"response": "Success"}
             return response
     except Exception as e:
