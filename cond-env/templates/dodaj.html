@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
@@ -9,13 +14,14 @@
     <div class="edit-wrapper">
       {% block content %}
       <form method="post" class="form">
-        <label class="label">Naziv recepta:</label>
-        <input class="input" name="receipt" value="{{request.form["receipt"]}}"
-        required />
-        <label class="label">Opis recepta:</label>
-        <input class="input"" name="description"
-        value="{{request.form["description"]}}" required />
-        <button type="submit">DODAJ</button>
+        <div class="form-title">Dodaj Recept</div>
+        <label class="form-label">Naziv recepta:</label>
+        <input class="form-input" name="receipt"
+        value="{{request.form["receipt"]}}" required />
+        <label class="form-label">Opis recepta:</label>
+        <textarea class="form-textarea"" name="description"
+        value="{{request.form["description"]}}" required /></textarea>
+        <button class="button" type="submit">DODAJ</button>
       </form>
       {% endblock %}
     </div>

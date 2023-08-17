@@ -22,6 +22,8 @@ def getData():
         return make_response(render_template("index.html"))
 
 
+
+#dodaj novi recept
 @app.route("/dodaj", methods=["POST","GET"])
 def dodaj():
         if request.method == "POST":
@@ -39,16 +41,17 @@ def dodaj():
                 response = add_receipt(temp)
 
                 if response["response"] == "Success":
-                        return make_response(render_template("dodaj.html"), 200)        
+                        return home()        
                 else:
-                        return make_response(jsonify(response), 400)
+                        return dodaj()
         else:
                 return make_response(render_template("dodaj.html"), 200)        
 
 
-#dodaj novi recept
-
 #uredi recept
+
+
+
 
 #izbriši recept
 @app.route("/delete/<id>", methods=["POST", "GET"])
