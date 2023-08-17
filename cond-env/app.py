@@ -23,7 +23,7 @@ def getData():
 
 
 @app.route("/dodaj", methods=["POST","GET"])
-def dodaj_recept():
+def dodaj():
         if request.method == "POST":
                 try:
                         temp = {}

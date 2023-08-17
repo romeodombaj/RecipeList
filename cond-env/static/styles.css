@@ -3,9 +3,14 @@ body {
   background-color: rgb(243, 243, 243);
 }
 
+/* index  */
 .main_wrapper {
+  position: relative;
   width: 100%;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -13,3 +18,77 @@ body {
   text-transform: capitalize;
   text-align: center;
 }
+
+.dodaj-button {
+  float: center;
+  width: fit-content;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.5em;
+  background-color: aqua;
+  padding: 0.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0.2rem;
+  text-transform: capitalize;
+  text-decoration: none;
+}
+
+.dodaj-button:hover {
+  background-color: gray;
+}
+
+.list {
+  margin: auto;
+  position: relative;
+  width: 100%;
+  min-width: 500px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+.list-item {
+  width: calc(85% - 4rem);
+  padding: 2rem;
+  height: 40vh;
+  min-height: 40vh;
+  background-color: rgb(246, 246, 246);
+  margin-top: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.4s;
+}
+
+.list-item:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+.item-actions {
+  width: 30%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-action {
+  text-transform: uppercase;
+}
+
+
+/* Dodaj */
+
+
+/* Uredi */
+
+
+/* Recept */

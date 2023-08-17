@@ -3,22 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Document</title>
   </head>
   <body>
-    <div class="nav-wrapper">
-      <a href={{url_for("dodaj_recept")}} class="nav-item">DODAJ NOVI RECEPT</a>
-      <div class="nav-item">UREDI RECEPT</div>
-      <div class="nav-item">IZBRISI RECEPT</div>
-    </div>
+
+
     <div class="main_wrapper">
       <div class="title">helo</div>
-      <ul class="list">
+      <a type="button" href={{url_for("dodaj")}} class="dodaj-button">dodaj recept</a>
+      <div class="list">
         {% block content %} {% for d in data %}
-        <li>{{d.receipt}}</li>
+        <div class="list-item">
+          <div class="item-title">{{d.receipt}}</div><div class="item-actions">
+            <div href="{{url_for("dodaj")}}" class="item-action">Uredi</div>
+            <div href="{{url_for("dodaj")}}" class="item-action">Obrisi</div>
+          </div></div>
         {% endfor %} {% endblock %}
-      </ul>
+      </div>
     </div>
   </body>
 </html>
