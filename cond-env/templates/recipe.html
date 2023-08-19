@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+
+    <title>RecipeList</title>
+  </head>
+
+  
+
+
+
+  <body>
+
+    <div class="navbar-wrapper">
+        <a href="/" class="title">RecipeList</a>
+        <div>
+          <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
+          <a class="nav-option"> Analitike </a>
+        </div>
+      </div>
+
+    {% block content %}
+    <div class="recipe_wrapper">
+      <div>
+        <img
+          class="recipe_image"
+          src="https://img.taste.com.au/Ktdodg-f/taste/2016/11/whole-chickens-116421-1.jpg"
+        />
+      </div>
+
+      <div class="recipe_info">
+        <div class="recipe_category">Kategorije: {{data.category}}</div>
+        <div class="recipe_title">{{data.recipe}}</div>
+        <div class="recipe_ingredients">
+          <pre>
+<strong>Sastojci: </strong>
+
+
+    {
+
+        {{data.ingredients}} 
+
+    }
+            </pre>
+        </div>
+        <div class="recipe_description">{{data.description}}</div>
+      </div>
+
+      <div class="recipe_actions">
+        <a type="a" class="action-wrapper" href="/edit/{{data.id}}">
+          <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
+        </a>
+        <a class="action-wrapper" href="/delete/{{data.id}}">
+          <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
+        </a>
+      </div>
+
+    </div>
+
+
+
+    {% endblock %}
+  </body>
+</html>

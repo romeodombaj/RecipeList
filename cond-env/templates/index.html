@@ -4,21 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Document</title>
+    <title>RecipeList</title>
   </head>
   <body>
 
-
+    <div class="navbar-wrapper">
+      <a href="/" class="title">RecipeList</a>
+      <div>
+        <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
+        <a class="nav-option"> Analitike </a>
+      </div>
+    </div>
+    
     <div class="main_wrapper">
-      <div class="title">helo</div>
-      <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
       <div class="list">
         {% block content %} {% for d in data %}
+        <a href="/recipe/{{d.id}}" class="link-wrapper">
         <div class="list-item">
-          <div class="item-title">{{d.recipe}}</div><div class="item-actions">
-            <a href="/edit/{{d.id}}" class="item-action">Uredi</a>
-            <a href="/delete/{{d.id}}" class="item-action">Obrisi</a>
-          </div></div>
+          <div class="show-info-wrapper">
+            <img class="show-image" src="https://img.taste.com.au/Ktdodg-f/taste/2016/11/whole-chickens-116421-1.jpg"/>
+            <div>
+              <div class="show-title">{{d.recipe}}</div>
+              <div class="show-description">{{d.description}}</div>
+            </div>            
+          </div>
+
+          <div class="item-actions">
+            <a type="a" class="action-wrapper" href="/edit/{{d.id}}">
+              <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
+            </a>
+            <a class="action-wrapper" href="/delete/{{d.id}}">
+              <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
+            </a>
+          </div>
+        </div>
+        </a>
         {% endfor %} {% endblock %}
       </div>
     </div>

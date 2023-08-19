@@ -18,10 +18,14 @@ def home():
 
 
 #dohvati pojedinacni recept
-@app.route("/recept")
-def getData():
-        response = {"message":"Hello World"}
-        return make_response(render_template("index.html"))
+@app.route("/recipe/<id>")
+def recipe(id):
+        response = get_recipe(id)
+        if response["response"] == "Success":
+                return make_response(render_template("recipe.html", data=response["data"]), 200)
+
+        else:
+                return make_response(render_template("index.html"), 200)
 
 
 

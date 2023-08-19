@@ -1,22 +1,15 @@
 body {
-  margin: 0;
-  background-color: rgb(243, 243, 243);
-}
-
-/* index  */
-.main_wrapper {
   position: relative;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 0;
+  background-color: whitesmoke;
 }
 
-.title {
-  font-size: 3em;
-  text-transform: capitalize;
-  text-align: center;
+:root {
+  --highlight-color: rgb(117, 200, 200);
+  --background-color: rgb(235, 235, 235);
+  --background-hover-color: whitesmoke;
+  --text-color-light: gray;
+  --text-color-dark: rgb(42, 42, 42);
 }
 
 .button {
@@ -25,7 +18,8 @@ body {
   margin-top: 2rem;
   margin-bottom: 2rem;
   font-size: 1.1em;
-  background-color: aqua;
+  color: whitesmoke;
+  background-color: var(--highlight-color);
   padding: 0.5rem;
   padding-left: 2rem;
   padding-right: 2rem;
@@ -38,15 +32,81 @@ body {
 }
 
 .button:hover {
-  background-color: gray;
+  background-color: var(--text-color-light);
+}
+
+.link-wrapper {
+  text-decoration: none;
+  color: black;
+}
+
+.action-wrapper {
+  padding: 0.75rem;
+  background-color: var(--highlight-color);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: 0.4s;
+}
+
+.action-wrapper:hover {
+  scale: 0.9;
+}
+
+.item-action {
+  height: 1.5rem;
+  aspect-ratio: 1;
+  filter: invert(100%);
+}
+
+/* navbar */
+
+.navbar-wrapper {
+  z-index: 100;
+  background-color: whitesmoke;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  min-width: 400px;
+  height: 8vh;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.title {
+  font-size: 2em;
+  text-transform: capitalize;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-color-dark);
+}
+
+.nav-option {
+  text-decoration: none;
+  color: var(--text-color-dark);
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+/* index  */
+.main_wrapper {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  margin-top: 8vh;
 }
 
 .list {
-  margin: auto;
   position: relative;
   width: 100%;
   min-width: 500px;
-  height: 80vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,7 +118,7 @@ body {
   padding: 2rem;
   height: 40vh;
   min-height: 40vh;
-  background-color: rgb(246, 246, 246);
+  background-color: var(--background-color);
   margin-top: 0.5rem;
   cursor: pointer;
   user-select: none;
@@ -70,32 +130,66 @@ body {
 }
 
 .list-item:hover {
-  background-color: rgb(255, 255, 255);
+  background-color: var(--background-hover-color);
 }
 
 .item-actions {
-  width: 30%;
+  width: fit-content;
+  height: 7rem;
+  min-height: 7rem;
+  margin-right: 2rem;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
 }
 
-.item-action {
-  text-transform: uppercase;
-  text-decoration: none;
+.show-info-wrapper {
+  height: 40vh;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.show-image {
+  border-radius: 0.25rem;
+  height: 30vh;
+  width: 30vh;
+  object-fit: cover;
+}
+
+.show-title {
+  text-transform: capitalize;
+  margin-left: 2rem;
+}
+
+.show-description {
+  font-size: 0.8em;
+  line-height: 1.2em;
+  color: var(--text-color-light);
+  text-transform: italic capitalize;
+  max-height: 3.6em;
+  width: 15rem;
+  margin-left: 2rem;
+  overflow: hidden;
 }
 
 /* Dodaj */
 
+.edit-wrapper {
+  margin-top: 8vh;
+  width: 100%;
+  padding-bottom: 10vh;
+}
+
 .form {
-  position: absolute;
+  position: relative;
   width: 60%;
-  height: 60vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  height: 120vh;
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -103,6 +197,7 @@ body {
   background-color: rgb(239, 235, 235);
   padding: 2rem;
   border-radius: 2rem;
+  margin-top: 10vh;
 }
 
 .form-title {
@@ -134,11 +229,76 @@ body {
 .form-textarea {
   width: 100%;
   padding: 0.25rem;
-  height: 5rem;
+  height: 10rem;
+  min-height: 10rem;
   border-radius: 0.25rem;
   background-color: rgb(252, 252, 252);
 }
 
-/* Uredi */
-
 /* Recept */
+
+.recipe_wrapper {
+  margin-top: 8vh;
+  position: relative;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.recipe_image {
+  width: 100%;
+  height: 35vh;
+  object-fit: cover;
+}
+
+.recipe_info {
+  position: relative;
+  width: calc(50% - 2rem);
+  margin: auto;
+  margin-top: 3rem;
+  background-color: var(--background-color);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  color: rgb(42, 42, 42);
+}
+
+.recipe_category {
+  color: var(--text-color-light);
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 0.7em;
+  font-style: italic;
+}
+
+.recipe_title {
+  margin-top: 2rem;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+}
+
+.recipe_ingredients {
+  color: var(--text-color-light);
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.recipe_description {
+  text-transform: capitalize;
+  width: 100%;
+}
+
+.recipe_actions {
+  position: absolute;
+  top: calc(35vh + 3rem + 0.25rem);
+  left: calc(75% + 3rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  height: 7rem;
+  min-height: 7rem;
+  align-items: center;
+  justify-content: space-between;
+  width: fit-content;
+}
