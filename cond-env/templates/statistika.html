@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas id="graf_novi_recepti" width="200" height="50"></canvas>
+    <canvas id="graf_po_kategoriji" width="200" height="50"></canvas>
+    <canvas id="graf_po_kategoriji2" width="200" height="50"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      var ctx = document.getElementById("graf_novi_recepti");
+      var ctx2 = document.getElementById("graf_po_kategoriji");
+      var ctx3 = document.getElementById("graf_po_kategoriji2");
+
+      const recept_datum = JSON.parse(
+        "{{recept_datum|safe}}".replaceAll("'", '"')
+      );
+
+      const recept_kategorija = JSON.parse(
+        "{{recept_kategorija|safe}}".replaceAll("'", '"')
+      );
+
+      const brRecepataD = recept_datum;
+      const datumi = Object.keys(recept_datum);
+
+      const brRecepataK = recept_kategorija;
+      const katetegorije = Object.keys(recept_kategorija);
+
+      // chart 1.
+
+      var data = {
+        labels: datumi,
+        datasets: [
+          {
+            label: "Broj objavljenih recepata po mjesecu",
+            bakgroundColor: "#19d44b",
+            borderColor: "#19d44b",
+            data: brRecepataD,
+          },
+        ],
+      };
+
+      var config = {
+        type: "line",
+        data: data,
+      };
+
+      var chart = new Chart(ctx, config);
+
+      // chart 2.
+
+      var data = {
+        labels: katetegorije,
+        datasets: [
+          {
+            label: "Broj recepata po kategoriji",
+            bakgroundColor: "#19d44b",
+            borderColor: "#19d44b",
+            data: brRecepataK,
+          },
+        ],
+      };
+
+      var config = {
+        type: "bar",
+        data: data,
+      };
+
+      var chart = new Chart(ctx2, config);
+
+      // chart 3.
+
+      var data = {
+        labels: datumi,
+        datasets: [
+          {
+            label: "Broj objavljenih recepata po mjesecu",
+            bakgroundColor: "#19d44b",
+            borderColor: "#19d44b",
+            data: brRecepataD,
+          },
+        ],
+      };
+
+      var config = {
+        type: "line",
+        data: data,
+      };
+
+      var chart = new Chart(ctx3, config);
+    </script>
+  </body>
+</html>

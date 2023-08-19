@@ -61,7 +61,11 @@ def get_recipes():
 def add_recipe(recipe):
     try:
         with orm.db_session:
-            Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=datetime.now(), edit_date=datetime.now())
+            if(recipe["create_date"]):
+                Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=recipe["create_date"], edit_date=datetime.now())
+            else:
+                Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=datetime.now(), edit_date=datetime.now())
+            
             response = {"response":"Success"}
             print(response)
             return response
@@ -103,9 +107,16 @@ def delete_recipe(recipe):
         return {"response": "Error", "error": str(e)}
 
 
-if __name__ == "__main__":
-    temp_recipe2 = {"recipe":"piletina", "image":"image", "ingredients":"ingredients", "category":"sda sd", "description":"sdasadsfdasdsgffdsdfsdfsadfs"}
-    #res=add_recipe(temp_recipe2)
-    #print(res)
-    #res=get_recipes()
+#if __name__ == "__main__":
+
+    #temp_recipe2 = {"recipe":"piletina", "image":"image", "ingredients":"ingredients", "category":"sda sd", "description":"sdasadsfdasdsgffdsdfsdfsadfs"}
+    #res=add_recipe({"recipe":"čum", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2023-02-05" })
+    #res=add_recipe({"recipe":"him", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2022-02-03" })
+    #res=add_recipe({"recipe":"bim", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2022-02-03" })
+
+    #res=add_recipe({"recipe":"em", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2024-07-20" })
+    #res=add_recipe({"recipe":"bum", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2023-05-21" })
+
+    #res=add_recipe({"recipe":"krumpir", "image":"image", "ingredients":"piletina", "category":"krumpir", "description":"sdasadsfdasdsgffdsdfsdfsadfs"})
+    #res=add_recipe({"recipe":"grah", "image":"image", "ingredients":"piletina", "category":"grah", "description":"sdasadsfdasdsgffdsdfsdfsadfs"})
     #print(res)

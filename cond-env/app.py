@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, make_response, render_template, url_for, redirect, request
 from db_connector import *
+from datetime import date, datetime
+import time
 
 app = Flask(__name__)
 
@@ -81,8 +83,8 @@ def edit(id):
                  response = get_recipe(id)
 
                  if response["response"] == "Success":
-                        return make_response(render_template("uredi.html", data=response["data"]), 200)
-                        
+                     return make_response(render_template("uredi.html", data=response["data"]), 200)
+                           
 
                  else:
                         return (make_response(jsonify(response), 400))
@@ -99,6 +101,22 @@ def delete(id):
                 return make_response(render_template("dodaj.html"))
 
 
+#graf test
+@app.route("/statistics", methods=["POST", "GET"])
+def pull():
+        response = get_recipes()
+        datumi = [str(x["create_date"].date()) for x in response["data"]]
+        datumi.sort(key=lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")))
+        recept_datum = {i: datumi.count(i) for i in datumi}
+
+        kategorije = [str(x["category"]) for x in response["data"]]
+        recept_kategorija = {i: kategorije.count(i) for i in kategorije}
+
+        
+        if response["response"] == "Success":
+                return make_response(render_template("statistika.html",  recept_datum=recept_datum, recept_kategorija=recept_kategorija), 200)
+        else:
+                return home()
 
 # ako se aplikacija pokreće na lokalnoj mašini
 # treba zakomentirati 1. #app.run() i odgomentirati 2.

@@ -12,10 +12,10 @@
       <a href="/" class="title">RecipeList</a>
       <div>
         <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
-        <a class="nav-option"> Analitike </a>
+        <a href={{url_for("pull")}} class="nav-option"> Analitike </a>
       </div>
     </div>
-    
+
     <div class="main_wrapper">
       <div class="list">
         {% block content %} {% for d in data %}
