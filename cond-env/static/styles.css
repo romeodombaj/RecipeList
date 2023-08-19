@@ -127,6 +127,7 @@ body {
   justify-content: space-between;
   align-items: center;
   transition: 0.4s;
+  animation: bottom-up-slide-in 1s forwards;
 }
 
 .list-item:hover {
@@ -259,6 +260,7 @@ body {
   padding: 2rem;
   border-radius: 0.5rem;
   color: rgb(42, 42, 42);
+  animation: bottom-up-slide-in 1s forwards;
 }
 
 .recipe_category {
@@ -301,4 +303,18 @@ body {
   align-items: center;
   justify-content: space-between;
   width: fit-content;
+  animation: bottom-up-slide-in 1s forwards;
+}
+
+/* animations */
+
+@keyframes bottom-up-slide-in {
+  0% {
+    transform: translatey(20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translatey(0%);
+    opacity: 1;
+  }
 }
