@@ -175,7 +175,22 @@ def user_recipes():
                 return make_response(render_template("recepti_korisnika.html", data=temp_list, currentUser=currentUser), 200)
         else:
                 return home()
-                
+
+#spremljeni recepti specfičnog korisnika
+@app.route("/saved_recipes/", methods=["GET"])
+def saved_recipes():
+        response = get_recipes()
+        if response["response"] == "Success":
+                temp_list = []
+                currentUser = request.cookies.get("currentUser")
+                for x in response["data"]:
+                        if x["user"] == currentUser:
+                                temp_list.append(x)
+
+                return make_response(render_template("spremljeni_recepti.html", data=temp_list, currentUser=currentUser), 200)
+        else:
+                return home()               
+
 # ako se aplikacija pokreće na lokalnoj mašini
 # treba zakomentirati 1. #app.run() i odgomentirati 2.
 # u slučaju da se aplikacija pokrece na subsistemu poput WSL

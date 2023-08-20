@@ -15,6 +15,10 @@ class Recipe(DB.Entity):
     edit_date = orm.Required(datetime)
     user = orm.Required(str)
 
+class User(DB.Entity):
+    id = orm.PrimaryKey(str)
+    username = orm.Required(str, unique=True)
+    saved_recipes = orm.Required(IntArray)
 
 
 
@@ -121,10 +125,49 @@ def delete_recipe(recipe):
         return {"response": "Error", "error": str(e)}
     
 
+#dodavanje usera
+def add_user(user):
+    try:
+        with orm.db_session:
+            User(id=user["id"], username=user["username"], saved_recipes = [])
 
+            response = {"response":"Success"}
+            return response
+    except Exception as e:
+        return {"response":"Error","error":e}
+    
 
+#spremanje recepta
+def save_recipe(userID, recipeID):
+    try:
+        with orm.db_session:
+            temp_recipe = User.get(id=userID)
+            temp_recipe.saved_recipes.append(recipeID)
+
+            response = {"response": "Success"}
+            return response
+    except Exception as e:
+        return {"response": "Error", "error": str(e)}
+    
+#brisanje spremljenog recepta    
+def unsave_recipe(userID, recipeID):
+    try:
+        with orm.db_session:
+            
+            temp_recipe = User.get(id=userID)
+            temp_recipe.saved_recipes.remove(recipeID)
+           
+            response = {"response": "Success"}
+            return response
+    except Exception as e:
+        return {"response": "Error", "error": str(e)}
 
 #if __name__ == "__main__":
+    #add_user({"id":"0002", "username":"dsa"})
+    #sv = unsave_recipe("0002", 5)
+    #print(sv["response"])
+    #add_user({"id":"0001", "username":"user1"})
+    #add_user({"id":"0002", "username":"user2"})
 
     #temp_recipe2 = {"recipe":"piletina", "image":"image", "ingredients":"ingredients", "category":"sda sd", "description":"sdasadsfdasdsgffdsdfsdfsadfs"}
     #res=add_recipe({"recipe":"čum", "image":"image", "ingredients":"piletina", "category":"piletina", "description":"sdasadsfdasdsgffdsdfsdfsadfs", "create_date" : "2023-02-05" })
