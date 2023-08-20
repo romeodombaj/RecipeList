@@ -43,8 +43,9 @@
 
 
     {
-
-        {{data.ingredients}} 
+      {% for x in data.ingredients %}
+        {{x}}
+      {% endfor %} 
 
     }
             </pre>
@@ -62,7 +63,7 @@
         </a>
 
         {% else %}
-        
+
         <a type="a" class="action-wrapper" style="background-color: rgb(78, 78, 78); cursor: default;">
           <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
         </a>

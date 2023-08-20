@@ -14,12 +14,13 @@
         <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
         <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
         <a href={{url_for("user_select")}} class="nav-option">Promjena korisnika</a>
-        <a href={{url_for("user_recipes")}} class="nav-option">Moji Recepti</a>
-
       </div>
     </div>
 
     <div class="main_wrapper">
+
+      <div class="title" style="margin-top: 2rem; margin-bottom: 2rem;">Moji Recepti</div>
+
       <div class="list">
         {% block content %} {% for d in data %}
         <a href="/recipe/{{d.id}}" class="link-wrapper">

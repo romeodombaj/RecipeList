@@ -107,6 +107,7 @@ def edit(id):
                  response = get_recipe(id)
 
                  if response["response"] == "Success":
+                     response["data"]["ingredients"] = ",".join(response["data"]["ingredients"])
                      return make_response(render_template("uredi.html", data=response["data"]), 200)
                            
 
@@ -159,6 +160,22 @@ def user_select():
         else:
                 return make_response(render_template("korisnik.html"), 400)
 
+
+#recepti specifičnog korisnika
+@app.route("/user_recipes/", methods=["GET"])
+def user_recipes():
+        response = get_recipes()
+        if response["response"] == "Success":
+                temp_list = []
+                currentUser = request.cookies.get("currentUser")
+                for x in response["data"]:
+                        if x["user"] == currentUser:
+                                temp_list.append(x)
+
+                return make_response(render_template("recepti_korisnika.html", data=temp_list, currentUser=currentUser), 200)
+        else:
+                return home()
+                
 # ako se aplikacija pokreće na lokalnoj mašini
 # treba zakomentirati 1. #app.run() i odgomentirati 2.
 # u slučaju da se aplikacija pokrece na subsistemu poput WSL

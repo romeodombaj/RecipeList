@@ -1,4 +1,5 @@
 from pony import orm
+from pony.orm import *
 from datetime import date, datetime
 
 DB = orm.Database()
@@ -7,7 +8,7 @@ class Recipe(DB.Entity):
     id = orm.PrimaryKey(int, auto=True)
     recipe = orm.Required(str)
     image = orm.Required(str)
-    ingredients = orm.Required(str)
+    ingredients = orm.Required(StrArray)
     category = orm.Required(str)
     description = orm.Required(str)
     create_date = orm.Required(datetime)
@@ -77,7 +78,7 @@ def add_recipe(recipe, user):
                 tempImage = recipe["image"]
             
 
-            Recipe(recipe=recipe["recipe"], image=tempImage, ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=tempDate, edit_date=datetime.now(), user=user)
+            Recipe(recipe=recipe["recipe"], image=tempImage, ingredients=recipe["ingredients"].split(","), category=recipe["category"], description=recipe["description"], create_date=tempDate, edit_date=datetime.now(), user=user)
 
 
             response = {"response":"Success"}
@@ -96,7 +97,7 @@ def edit_recipe(id, recipe):
             temp_recipe = Recipe.get(id=id)
             temp_recipe.recipe = recipe["recipe"]
             temp_recipe.image = recipe["image"]
-            temp_recipe.ingredients = recipe["ingredients"]
+            temp_recipe.ingredients = recipe["ingredients"].split(",")
             temp_recipe.category = recipe["category"]
             temp_recipe.description = recipe["description"]
             temp_recipe.edit_date = datetime.now()
