@@ -8,20 +8,20 @@
     />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>RecipeList</title>
   </head>
   <body>
     <div class="edit-wrapper">
       {% block content %}
       <form method="post" class="form">
-        <div class="form-title">Dodaj Recept</div>
+        <div class="form-title">Uredi Recept</div>
         <label class="form-label">Naziv recepta:</label>
         <input class="form-input" name="recipe"
         value="{{data.recipe}}" required />
 
         <label class="form-label">Link slike:</label>
         <input class="form-input" name="image"
-        value="{{data.image}}" required />
+        value="{{data.image}}" />
 
         <label class="form-label">Sastojci:</label>
         <input class="form-input" name="ingredients"

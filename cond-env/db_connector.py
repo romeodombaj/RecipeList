@@ -12,6 +12,10 @@ class Recipe(DB.Entity):
     description = orm.Required(str)
     create_date = orm.Required(datetime)
     edit_date = orm.Required(datetime)
+    user = orm.Required(str)
+
+
+
 
     
 DB.bind(provider="sqlite", filename="database.sqlite", create_db=True)
@@ -58,16 +62,25 @@ def get_recipes():
 
 #-----------------------------------------------
 #dodavanje recepta
-def add_recipe(recipe):
+def add_recipe(recipe, user):
     try:
         with orm.db_session:
-            if(recipe["create_date"]):
-                Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=recipe["create_date"], edit_date=datetime.now())
+
+            if hasattr(recipe, "create_date") == False :
+                tempDate = datetime.now()
             else:
-                Recipe(recipe=recipe["recipe"], image=recipe["image"], ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=datetime.now(), edit_date=datetime.now())
+                tempDate = recipe["create_date"]
+
+            if recipe["image"] is None:
+                tempImage = "https://img.taste.com.au/Ktdodg-f/taste/2016/11/whole-chickens-116421-1.jpg"
+            else:
+                tempImage = recipe["image"]
             
+
+            Recipe(recipe=recipe["recipe"], image=tempImage, ingredients=recipe["ingredients"], category=recipe["category"], description=recipe["description"], create_date=tempDate, edit_date=datetime.now(), user=user)
+
+
             response = {"response":"Success"}
-            print(response)
             return response
     except Exception as e:
         return {"response":"Error","error":e}
@@ -105,6 +118,9 @@ def delete_recipe(recipe):
             return response
     except Exception as e:
         return {"response": "Error", "error": str(e)}
+    
+
+
 
 
 #if __name__ == "__main__":

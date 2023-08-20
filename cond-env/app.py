@@ -5,16 +5,34 @@ import time
 
 app = Flask(__name__)
 
-temp_storage = []
+
 
 
 #dohvati sve recepte
 @app.route("/")
-def home():
+def home(user=""):
+        temp="0001"
         response = get_recipes()
+        print(response["response"])
         if response["response"] == "Success":
-                return make_response(render_template("index.html", data=response["data"]), 200)
+                try:
+                        if user != "":
+                                temp = user
+                        else:
+                                temp = request.cookies.get("currentUser")
+                        resp = make_response(render_template("index.html", data=response["data"], currentUser=temp), 200)
 
+                except Exception as e:
+                        resp = make_response(render_template("index.html", data=response["data"], currentUser="0001"), 200)
+                        temp = ""
+
+                if user != "":
+                        resp.set_cookie('currentUser', user)
+                elif temp == "":
+                        resp.set_cookie('currentUser', "0001")
+
+                
+                return resp
         else:
                 return make_response(render_template("index.html"), 200)
 
@@ -24,7 +42,11 @@ def home():
 def recipe(id):
         response = get_recipe(id)
         if response["response"] == "Success":
-                return make_response(render_template("recipe.html", data=response["data"]), 200)
+                currentUser = request.cookies.get("currentUser")
+                print("datasa:")
+                print(currentUser)
+                print(response["data"])
+                return make_response(render_template("recipe.html", data=response["data"], currentUser=currentUser), 200)
 
         else:
                 return make_response(render_template("index.html"), 200)
@@ -40,14 +62,16 @@ def add():
                         for key, value in request.form.items():
                                 if value == "":
                                         temp[key] = None
-                                        print("Nonemone")
                                 else:
                                         temp[key] = value
                 except Exception as e:
                         response = {"response":str(e)}
                         return(make_response(jsonify(response), 400))
+
+                tempU = request.cookies.get("currentUser")
+                print(tempU)
                 
-                response = add_recipe(temp)
+                response = add_recipe(temp, tempU)
 
                 if response["response"] == "Success":
                         return home()        
@@ -101,9 +125,9 @@ def delete(id):
                 return make_response(render_template("dodaj.html"))
 
 
-#graf test
+#statistika
 @app.route("/statistics", methods=["POST", "GET"])
-def pull():
+def statistics():
         response = get_recipes()
         datumi = [str(x["create_date"].date()) for x in response["data"]]
         datumi.sort(key=lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")))
@@ -117,6 +141,23 @@ def pull():
                 return make_response(render_template("statistika.html",  recept_datum=recept_datum, recept_kategorija=recept_kategorija), 200)
         else:
                 return home()
+
+
+#odabir korisnika
+@app.route("/user_select/", methods=["POST", "GET"])
+def user_select():
+        
+        if request.method == "POST":
+                if request.form["submit_user"] == "user1":
+                        currentUser = "0001"
+                else:
+                        currentUser = "0002"
+                print(currentUser)
+
+
+                return home(currentUser)
+        else:
+                return make_response(render_template("korisnik.html"), 400)
 
 # ako se aplikacija pokreće na lokalnoj mašini
 # treba zakomentirati 1. #app.run() i odgomentirati 2.

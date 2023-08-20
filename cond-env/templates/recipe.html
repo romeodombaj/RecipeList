@@ -30,7 +30,7 @@
       <div>
         <img
           class="recipe_image"
-          src="https://img.taste.com.au/Ktdodg-f/taste/2016/11/whole-chickens-116421-1.jpg"
+          src={{data.image}}
         />
       </div>
 
@@ -53,12 +53,24 @@
       </div>
 
       <div class="recipe_actions">
+        {% if currentUser == data.user %}
         <a type="a" class="action-wrapper" href="/edit/{{data.id}}">
           <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
         </a>
         <a class="action-wrapper" href="/delete/{{data.id}}">
           <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
         </a>
+
+        {% else %}
+        
+        <a type="a" class="action-wrapper" style="background-color: rgb(78, 78, 78); cursor: default;">
+          <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
+        </a>
+        <a type="a" class="action-wrapper" style="background-color: rgb(78, 78, 78); cursor: default;">
+          <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
+        </a>
+
+        {% endif %}
       </div>
 
     </div>

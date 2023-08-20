@@ -12,7 +12,8 @@
       <a href="/" class="title">RecipeList</a>
       <div>
         <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
-        <a href={{url_for("pull")}} class="nav-option"> Analitike </a>
+        <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
+        <a href={{url_for("user_select")}} class="nav-option">Promjena korisnika</a>
       </div>
     </div>
 
@@ -22,25 +23,40 @@
         <a href="/recipe/{{d.id}}" class="link-wrapper">
         <div class="list-item">
           <div class="show-info-wrapper">
-            <img class="show-image" src="https://img.taste.com.au/Ktdodg-f/taste/2016/11/whole-chickens-116421-1.jpg"/>
+            <img class="show-image" src="{{d.image}}"/>
             <div>
               <div class="show-title">{{d.recipe}}</div>
               <div class="show-description">{{d.description}}</div>
             </div>            
           </div>
+          
 
           <div class="item-actions">
+            {% if currentUser == d.user %}
             <a type="a" class="action-wrapper" href="/edit/{{d.id}}">
               <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
             </a>
             <a class="action-wrapper" href="/delete/{{d.id}}">
               <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
             </a>
+
+            {% else %}
+            <a type="a" class="action-wrapper" style="background-color: rgb(78, 78, 78); cursor: default;">
+              <img src="{{ url_for('static',filename='images/edit_icon.png') }}" class="item-action"/>
+            </a>
+            <a type="a" class="action-wrapper" style="background-color: rgb(78, 78, 78); cursor: default;">
+              <img src="{{ url_for('static',filename='images/delete_icon.png') }}"  class="item-action"/>
+            </a>
+
+            {% endif %}
           </div>
+
+          
         </div>
         </a>
         {% endfor %} {% endblock %}
       </div>
     </div>
+
   </body>
 </html>
