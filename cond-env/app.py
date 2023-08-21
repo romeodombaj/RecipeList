@@ -1,10 +1,10 @@
-from flask import Flask, jsonify, make_response, render_template, url_for, redirect, request
+from flask import Flask, flash, jsonify, make_response, render_template, url_for, redirect, request
 from db_connector import *
 from datetime import date, datetime
 import time
 
 app = Flask(__name__)
-
+app.secret_key = "key_secret"
 
 
 
@@ -75,6 +75,7 @@ def recipe(id):
                         print("unsaved")
 
                 if request.method == "POST":
+                        
                         if request.form["save"] == "False":
                                 res = save_recipe(currentUser, id)
                                 saved=True
@@ -117,8 +118,9 @@ def add():
                         tempU = "0001"
                 
                 response = add_recipe(temp, tempU)
-
+                flash(response["response"])
                 if response["response"] == "Success":
+                        
                         return make_response(redirect("/"))    
                 else:
                         return make_response(render_template("dodaj.html"), 400)        
@@ -143,7 +145,7 @@ def edit(id):
                         return (make_response(jsonify(response), 400))
                 
                 response = edit_recipe(id, temp)
-
+                flash(response["response"])
                 if response["response"] == "Success":
                         return make_response(redirect("/"))      
                 else:
@@ -164,7 +166,7 @@ def edit(id):
 @app.route("/delete/<id>", methods=["POST", "GET"])
 def delete(id):
         response = delete_recipe(id)
-
+        flash(response["response"])
         if response["response"] == "Success":
                 return make_response(redirect("/"))
         else:
@@ -216,10 +218,10 @@ def user_select():
                 else:
                         currentUser = "0002"
                 print(currentUser)
-
                 response  = make_response(redirect("/"))
                 response.set_cookie("currentUser", currentUser)
 
+                flash("Success")
                 return response
         else:
                 return make_response(render_template("korisnik.html"), 200)
@@ -244,6 +246,7 @@ def user_recipes():
 @app.route("/saved_recipes/", methods=["GET"])
 def saved_recipes():
         response = get_recipes()
+        flash(response["response"])
         if response["response"] == "Success":
                 temp_list = []
                 currentUser = request.cookies.get("currentUser")
@@ -254,6 +257,7 @@ def saved_recipes():
                                 if y == x["id"]:
                                         temp_list.append(x)
 
+                
                 return make_response(render_template("spremljeni_recepti.html", data=temp_list, currentUser=currentUser), 200)
         else:
                 return make_response(redirect("/"))

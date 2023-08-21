@@ -7,6 +7,20 @@
     <title>RecipeList</title>
   </head>
   <body>
+    
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+          <dialog open style="z-index: 1000;">
+            <p>{{message}}</p>
+            <form method="dialog">
+              <button>OK</button>
+            </form>
+          </dialog>
+        {% endfor %}
+    {% endif %}
+  {% endwith %}
+
 
     <div class="navbar-wrapper">
       <a href="/" class="title">RecipeList</a>
@@ -77,6 +91,7 @@
         {% endfor %} {% endblock %}
       </div>
     </div>
+
 
     <script>
       var el = document.getElementById("ddlViewBy");
