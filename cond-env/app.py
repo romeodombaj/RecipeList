@@ -77,12 +77,13 @@ def recipe(id):
                 if request.method == "POST":
                         
                         if request.form["save"] == "False":
-                                res = save_recipe(currentUser, id)
+                                save_recipe(currentUser, id)
                                 saved=True
 
                         else:
                                 unsave_recipe(currentUser, id)
                                 saved=False
+                        
                         
                         return make_response(render_template("recipe.html", data=response["data"], currentUser=currentUser, saved=saved), 200)
 
@@ -246,7 +247,6 @@ def user_recipes():
 @app.route("/saved_recipes/", methods=["GET"])
 def saved_recipes():
         response = get_recipes()
-        flash(response["response"])
         if response["response"] == "Success":
                 temp_list = []
                 currentUser = request.cookies.get("currentUser")
