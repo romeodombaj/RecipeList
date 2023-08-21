@@ -11,6 +11,16 @@
     <title>Document</title>
   </head>
   <body>
+    <div class="navbar-wrapper">
+      <a href="/" class="title">RecipeList</a>
+      <div>
+        <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
+        <a href={{url_for("user_recipes")}} class="nav-option">Moji Recepti</a>
+        <a href={{url_for("saved_recipes")}} class="nav-option">Spremljeni Recepti</a>
+        <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
+        <a href={{url_for("user_select")}} class="nav-option" style="font-size: 0.7em; color: gray;">Promjena korisnika</a>
+      </div>
+    </div>
     <div class="edit-wrapper">
       {% block content %}
       <form method="post" class="form">

@@ -12,19 +12,29 @@
       <a href="/" class="title">RecipeList</a>
       <div>
         <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
-        <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
         <a href={{url_for("user_recipes")}} class="nav-option">Moji Recepti</a>
         <a href={{url_for("saved_recipes")}} class="nav-option">Spremljeni Recepti</a>
-        <a href={{url_for("user_select")}} class="nav-option" style="font-size: 0.5em; color: gray;">Promjena korisnika</a>
-
+        <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
+        <a href={{url_for("user_select")}} class="nav-option" style="font-size: 0.7em; color: gray;">Promjena korisnika</a>
       </div>
     </div>
     <div class="main_wrapper">
 
       <div class="search-wrapper">
         <form method="post" class="search-form">
-          <input name="search" style="width: 70%; height: inherit;" value="{{request.form["search"]}}">
-          <button class="button" style="width: 25%; margin-left: 5%; height: inherit;" type="submit">Pretraži</button>
+          <input name="search" style="width: 50%; height: 1.5rem; padding: 0.3rem; margin: 0;" value="{{request.form["search"]}}" placeholder="Pretraži ...">
+         
+          <div style="width: 100%; margin-top: 0.5rem; display: flex; flex-direction: row; align-items: center; justify-content: center;">
+            <select class="dropdown" name="sort" style="width: 50%; margin: 0; height: 2rem;">
+              <option>Sortiraj</option>
+              <option>Po nazivu(A-Z)</option>
+              <option>Po nazivu(Z-A)</option>
+              <option>Po kategoriji(A-Z)</option>
+              <option>Po kategoriji(Z-A)</option>
+            </select>
+            <button class="button" style="width: 50%; margin: 0; margin-left: 0.5rem;" type="submit">Pretraži/Sortiraj</button>
+          </div>
+          
         </form>
         </div>
 
@@ -68,5 +78,10 @@
       </div>
     </div>
 
+    <script>
+      var el = document.getElementById("ddlViewBy");
+      var value = el.value;
+      var text = el.options[e.selectedIndex].text;
+    </script>
   </body>
 </html>

@@ -3,9 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='styles.css') }}"
+  />
     <title>Document</title>
   </head>
   <body>
+
+
+    <div class="navbar-wrapper">
+      <a href="/" class="title">RecipeList</a>
+      <div>
+        <a type="button" href={{url_for("add")}} class="button">dodaj recept</a>
+        <a href={{url_for("user_recipes")}} class="nav-option">Moji Recepti</a>
+        <a href={{url_for("saved_recipes")}} class="nav-option">Spremljeni Recepti</a>
+        <a href={{url_for("statistics")}} class="nav-option"> Statistika </a>
+        <a href={{url_for("user_select")}} class="nav-option" style="font-size: 0.7em; color: gray;">Promjena korisnika</a>
+      </div>
+    </div>
+
     <canvas id="graf_novi_recepti" width="200" height="50"></canvas>
     <canvas id="graf_po_kategoriji" width="200" height="50"></canvas>
     <canvas id="graf_po_kategoriji2" width="200" height="50"></canvas>
@@ -85,7 +102,7 @@
         labels: users,
         datasets: [
           {
-            label: "Broj objavljenih recepata po mjesecu",
+            label: "Broj spremljenih recepata po korisniku",
             backgroundColor: "rgba(190, 217, 17, 1)",
             borderColor: "rgba(190, 217, 17, 1)",
             data: brRecepataKor,

@@ -10,44 +10,47 @@ app = Flask(__name__)
 
 #dohvati sve recepte
 @app.route("/", methods=["GET", "POST"])
-def home(user=""):
-                temp="0001"
-                response = get_recipes()
-                if response["response"] == "Success":
+def home():
+        temp="0001"
+        
+        response = get_recipes()
+        if response["response"] == "Success":
+                temp_data = response["data"]
+                sort = "Sortiraj"
+               
+                if request.method == "POST":
+                        search_str = request.form["search"]
+                        sort = request.form["sort"]
 
-                        if request.method == "POST":
-                                search_str = request.form["search"]
+
+                        if len(search_str) != 0:
                                 temp_data = []
-                                
                                 for x in response["data"]:
                                         print(x["recipe"])
                                         if search_str in x["recipe"]:
                                                 temp_data.append(x)           
-                        else:
-                        
-                                temp_data = response["data"]
 
-                        try:
-                                if user != "":
-                                        temp = user
-                                else:
-                                        temp = request.cookies.get("currentUser")
+                if sort == "Po nazivu(A-Z)":
+                        temp_data.sort(key=lambda x: x["recipe"], reverse=False)
+                elif sort == "Po nazivu(Z-A)":
+                        temp_data.sort(key=lambda x: x["recipe"], reverse=True)
+                elif sort == "Po kategoriji(A-Z)":
+                        temp_data.sort(key=lambda x: x["category"], reverse=False)
+                elif sort == "Po kategoriji(Z-A)":
+                        temp_data.sort(key=lambda x: x["category"], reverse=True)
+                
+                if "currentUser" in request.cookies:
+                        temp = request.cookies.get("currentUser")
+                        resp = make_response(render_template("index.html", data=temp_data, currentUser=temp), 200)
 
-                                resp = make_response(render_template("index.html", data=temp_data, currentUser=temp), 200)
-
-                        except Exception as e:
-                                resp = make_response(render_template("index.html", data=temp_data, currentUser="0001"), 200)
-                                temp = ""
-
-                        if user != "":
-                                resp.set_cookie('currentUser', user)
-                        elif temp == "":
-                                resp.set_cookie('currentUser', "0001")
-
-                        
-                        return resp
                 else:
-                        return make_response(render_template("index.html"), 200)
+                        resp = make_response(render_template("index.html", data=temp_data, currentUser=temp), 200)
+                        resp.set_cookie("currentUser", "0001")
+                
+                
+                return resp
+        else:
+                return make_response(render_template("index.html"), 200)
 
 
 
@@ -116,7 +119,7 @@ def add():
                 response = add_recipe(temp, tempU)
 
                 if response["response"] == "Success":
-                        return home()        
+                        return make_response(redirect("/"))    
                 else:
                         return make_response(render_template("dodaj.html"), 400)        
         else:
@@ -142,7 +145,7 @@ def edit(id):
                 response = edit_recipe(id, temp)
 
                 if response["response"] == "Success":
-                        return home()        
+                        return make_response(redirect("/"))      
                 else:
                         return make_response(render_template("uredi.html"), 400)        
         else:
@@ -163,7 +166,7 @@ def delete(id):
         response = delete_recipe(id)
 
         if response["response"] == "Success":
-                return home()
+                return make_response(redirect("/"))
         else:
                 return make_response(render_template("dodaj.html"))
 
@@ -197,7 +200,7 @@ def statistics():
 
                 return make_response(render_template("statistika.html",  recept_datum=recept_datum, recept_kategorija=recept_kategorija, recept_korisnik=users_data), 200)
         else:
-                return home()
+                return make_response(redirect("/"))
 
 
 #odabir korisnika
@@ -205,16 +208,21 @@ def statistics():
 def user_select():
         
         if request.method == "POST":
+
+                currentUser = ""
+                print("IN USER")                
                 if request.form["submit_user"] == "user1":
                         currentUser = "0001"
                 else:
                         currentUser = "0002"
                 print(currentUser)
 
+                response  = make_response(redirect("/"))
+                response.set_cookie("currentUser", currentUser)
 
-                return home(currentUser)
+                return response
         else:
-                return make_response(render_template("korisnik.html"), 400)
+                return make_response(render_template("korisnik.html"), 200)
 
 
 #recepti specifičnog korisnika
@@ -230,7 +238,7 @@ def user_recipes():
 
                 return make_response(render_template("recepti_korisnika.html", data=temp_list, currentUser=currentUser), 200)
         else:
-                return home()
+                return make_response(redirect("/"))
 
 #spremljeni recepti specfičnog korisnika
 @app.route("/saved_recipes/", methods=["GET"])
@@ -248,14 +256,13 @@ def saved_recipes():
 
                 return make_response(render_template("spremljeni_recepti.html", data=temp_list, currentUser=currentUser), 200)
         else:
-                return home()        
-
+                return make_response(redirect("/"))
        
-
-# ako se aplikacija pokreće na lokalnoj mašini
-# treba zakomentirati 1. #app.run() i odgomentirati 2.
-# u slučaju da se aplikacija pokrece na subsistemu poput WSL
-# ostavlja se 1. app.run()
+# moguce da je sljedece meni samo bug:
+        # ako se aplikacija pokreće na lokalnoj mašini
+        # treba zakomentirati 1. #app.run() i odgomentirati 2.
+        # u slučaju da se aplikacija pokrece na subsistemu poput WSL
+        # ostavlja se 1. app.run()
 if __name__ == "__main__":
         #1.
         app.run(host="0.0.0.0", port=8080)
