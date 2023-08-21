@@ -26,7 +26,7 @@ Web aplikacija RecipeList namjenjena je gotovo svakom tko želi nešto kuhati il
 
 *Napomena: U aplikaciji se trenutno ne mogu registrirati niti prijaviti različiti korisnici već su hardcodirani u obliku "usera1" i "usera2", no njihovo dodavanje dodano je u funkcije baze podataka te se lako u budućnosti može implementirati register/login prozor.*
 
-## Struktura web aplikacijež
+## Struktura web aplikacije
 Web aplikaciju pokreće samo jedan malo kompleksniji web servis. Serivs obavlja sve routing, osnovne, te dodatne funkcije. 
 
 ## Pokretanje web aplikacije
