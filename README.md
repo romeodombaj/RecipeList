@@ -32,8 +32,8 @@ Web aplikaciju pokreće samo jedan malo kompleksniji web servis. Serivs obavlja 
 ## Pokretanje web aplikacije
  1. Preuzeti sve datoteke ili klonirati repozitorij
  2. Pomoću CLI sučelja navigirati u mapu aplikacije
- 3. izraditi docker image pomoću naredbe: sudo docker build --tag recipe-list:1.0 .  <--- napomena: ne zaboraviti točku na kraju
- 4. Pokrenuti docker kontejner pomoću izrađene docker slike: sudo docker run -d -p 8080:8080 recipe-list:1.0
- 5. pokrenutom kontejneru tj aplikaciji pristupa se na lokalnom web pregledniku na lokaciji localhost:8080
+ 3. izraditi docker image pomoću naredbe: `sudo docker build --tag recipe-list:1.0 .`  *<--- napomena: ne zaboraviti točku na kraju*
+ 4. Pokrenuti docker kontejner pomoću izrađene docker slike: `sudo docker run -d -p 8080:8080 recipe-list:1.0`
+ 5. pokrenutom kontejneru tj aplikaciji pristupa se na lokalnom web pregledniku na lokaciji `localhost:8080`
 
-*Napomena: ja sam radio preko wsl subsitema tako da sam u app.py na dnu morao definirati <sup>host=0.0.0.0</sup>, što nije radilo kada sam pokretao sa dockera na windowsu u kojem slučaju se samo <sup>host=0.0.0.0</sup> mora obrisati kako je zakomenitrano i u samom app.py dokumentu (možda se samo meni desio bug pa će raditi svakako)*
+*Napomena: ja sam radio preko wsl subsitema tako da sam u app.py na dnu morao definirati `host=0.0.0.0`, što nije radilo kada sam pokretao sa dockera na windowsu u kojem slučaju se samo `host=0.0.0.0` mora obrisati kako je zakomenitrano i u samom app.py dokumentu (možda se samo meni desio bug pa će raditi svakako)*
