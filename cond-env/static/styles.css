@@ -11,6 +11,9 @@ body {
   --text-color-light: gray;
   --text-color-dark: rgb(42, 42, 42);
 }
+.hidden {
+  display: none;
+}
 
 .button {
   float: center;

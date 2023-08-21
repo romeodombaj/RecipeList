@@ -34,9 +34,8 @@ DB.generate_mapping(create_tables=True)
 def get_recipe(id):
     try:
         with orm.db_session:
-
             result = Recipe.get(id=id).to_dict()
-            response = {"response":"Success", "data":result}
+            response = {"response":"Success", "data":result}    
             return response
     except Exception as e:
         print(e)
@@ -136,13 +135,45 @@ def add_user(user):
     except Exception as e:
         return {"response":"Error","error":e}
     
+def get_user(userID):
+    try:
+        with orm.db_session:
+            result = User.get(id=userID).to_dict()
+            response = {"response":"Success", "data":result}
+            return response
+    except Exception as e:
+        return {"response":"Error","error":e}
+    
+def get_users():
+    try:
+        with orm.db_session:
+            result = orm.select(el for el in User)[:]
+            temp_list = []
+    
+            for el in result:
+                temp_list.append(el.to_dict())
+
+            response = {"response":"Success", "data":temp_list}
+            
+            return response
+        
+    except Exception as e:
+        return {"response":"Error","error":str(e)}
+
 
 #spremanje recepta
 def save_recipe(userID, recipeID):
     try:
         with orm.db_session:
+            print("saving the recipe")
             temp_recipe = User.get(id=userID)
-            temp_recipe.saved_recipes.append(recipeID)
+            temp_recipe.id = temp_recipe.id
+            temp_recipe.username = temp_recipe.username
+
+            print (temp_recipe.username)
+
+            if(int(recipeID) not in temp_recipe.saved_recipes):
+                temp_recipe.saved_recipes.append(int(recipeID))
 
             response = {"response": "Success"}
             return response
@@ -155,16 +186,19 @@ def unsave_recipe(userID, recipeID):
         with orm.db_session:
             
             temp_recipe = User.get(id=userID)
-            temp_recipe.saved_recipes.remove(recipeID)
+            temp_recipe.saved_recipes.remove(int(recipeID))
            
             response = {"response": "Success"}
             return response
     except Exception as e:
         return {"response": "Error", "error": str(e)}
 
+
 #if __name__ == "__main__":
     #add_user({"id":"0002", "username":"dsa"})
-    #sv = unsave_recipe("0002", 5)
+    #sv = save_recipe("0002", 2)
+    #print(sv["response"])
+   #sv = unsave_recipe("0001", 1)
     #print(sv["response"])
     #add_user({"id":"0001", "username":"user1"})
     #add_user({"id":"0002", "username":"user2"})

@@ -24,11 +24,18 @@
         "{{recept_kategorija|safe}}".replaceAll("'", '"')
       );
 
+      const recept_korisnik = JSON.parse(
+        "{{recept_korisnik|safe}}".replaceAll("'", '"')
+      );
+
       const brRecepataD = recept_datum;
       const datumi = Object.keys(recept_datum);
 
       const brRecepataK = recept_kategorija;
       const katetegorije = Object.keys(recept_kategorija);
+
+      const brRecepataKor = recept_korisnik["num_recipes"];
+      const users = recept_korisnik["usernames"];
 
       // chart 1.
 
@@ -58,8 +65,8 @@
         datasets: [
           {
             label: "Broj recepata po kategoriji",
-            bakgroundColor: "#19d44b",
-            borderColor: "#19d44b",
+            backgroundColor: "rgba(50,96,168, 1)",
+            borderColor: "rgba(50,96,168, 1)",
             data: brRecepataK,
           },
         ],
@@ -75,19 +82,19 @@
       // chart 3.
 
       var data = {
-        labels: datumi,
+        labels: users,
         datasets: [
           {
             label: "Broj objavljenih recepata po mjesecu",
-            bakgroundColor: "#19d44b",
-            borderColor: "#19d44b",
-            data: brRecepataD,
+            backgroundColor: "rgba(190, 217, 17, 1)",
+            borderColor: "rgba(190, 217, 17, 1)",
+            data: brRecepataKor,
           },
         ],
       };
 
       var config = {
-        type: "line",
+        type: "bar",
         data: data,
       };
 

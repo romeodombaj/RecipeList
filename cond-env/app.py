@@ -38,15 +38,39 @@ def home(user=""):
 
 
 #dohvati pojedinacni recept
-@app.route("/recipe/<id>")
+@app.route("/recipe/<id>", methods=["POST", "GET"])
 def recipe(id):
         response = get_recipe(id)
         if response["response"] == "Success":
                 currentUser = request.cookies.get("currentUser")
-                print("datasa:")
-                print(currentUser)
-                print(response["data"])
-                return make_response(render_template("recipe.html", data=response["data"], currentUser=currentUser), 200)
+                user = get_user(currentUser)
+                saved = ""
+
+                print(user["data"])
+
+                if int(response["data"]["id"]) in user["data"]["saved_recipes"]:
+                        saved = True
+                        print("saved")
+                else:
+                        saved = False
+                        print("unsaved")
+
+                if request.method == "POST":
+                        print(request.form["save"])
+                        if request.form["save"] == "False":
+                                res = save_recipe(currentUser, id)
+                                saved=True
+
+                        else:
+                                unsave_recipe(currentUser, id)
+                                saved=False
+                        
+                        return make_response(render_template("recipe.html", data=response["data"], currentUser=currentUser, saved=saved), 200)
+
+                else:
+                        return make_response(render_template("recipe.html", data=response["data"], currentUser=currentUser, saved=saved), 200)
+
+        
 
         else:
                 return make_response(render_template("index.html"), 200)
@@ -70,6 +94,9 @@ def add():
 
                 tempU = request.cookies.get("currentUser")
                 print(tempU)
+
+                if(tempU is None):
+                        tempU = "0001"
                 
                 response = add_recipe(temp, tempU)
 
@@ -130,16 +157,30 @@ def delete(id):
 @app.route("/statistics", methods=["POST", "GET"])
 def statistics():
         response = get_recipes()
-        datumi = [str(x["create_date"].date()) for x in response["data"]]
-        datumi.sort(key=lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")))
-        recept_datum = {i: datumi.count(i) for i in datumi}
+        resp_users = get_users()
+        if response["response"] and resp_users["response"] == "Success":
+                #podaci za 1. graf / br kreiranih recepata po datumu
+                datumi = [str(x["create_date"].date()) for x in response["data"]]
+                datumi.sort(key=lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")))
+                recept_datum = {i: datumi.count(i) for i in datumi}
 
-        kategorije = [str(x["category"]) for x in response["data"]]
-        recept_kategorija = {i: kategorije.count(i) for i in kategorije}
-
+                #podaci za 2. graf broj recepata po kategoriji
+                kategorije = [str(x["category"]) for x in response["data"]]
+                recept_kategorija = {i: kategorije.count(i) for i in kategorije}
         
-        if response["response"] == "Success":
-                return make_response(render_template("statistika.html",  recept_datum=recept_datum, recept_kategorija=recept_kategorija), 200)
+                #podaci za 3. graf / br spremljenih recepata po korisniku
+                users_data = {
+                        "usernames":[],
+                        "num_recipes":[]
+                }
+                print(resp_users["data"])
+                
+                for x in resp_users["data"]:
+                        #users_data.append ({"username": x["username"], "number_of_saved": len(x["saved_recipes"])})
+                        users_data["usernames"].append(x["username"])
+                        users_data["num_recipes"].append(len(x["saved_recipes"]))
+
+                return make_response(render_template("statistika.html",  recept_datum=recept_datum, recept_kategorija=recept_kategorija, recept_korisnik=users_data), 200)
         else:
                 return home()
 
@@ -183,13 +224,18 @@ def saved_recipes():
         if response["response"] == "Success":
                 temp_list = []
                 currentUser = request.cookies.get("currentUser")
+                user_saved_recipes = get_user(currentUser)["data"]["saved_recipes"]
+                print(user_saved_recipes)
                 for x in response["data"]:
-                        if x["user"] == currentUser:
-                                temp_list.append(x)
+                        for y in user_saved_recipes:
+                                if y == x["id"]:
+                                        temp_list.append(x)
 
                 return make_response(render_template("spremljeni_recepti.html", data=temp_list, currentUser=currentUser), 200)
         else:
-                return home()               
+                return home()        
+
+       
 
 # ako se aplikacija pokreće na lokalnoj mašini
 # treba zakomentirati 1. #app.run() i odgomentirati 2.
