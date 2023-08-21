@@ -9,32 +9,48 @@ app = Flask(__name__)
 
 
 #dohvati sve recepte
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home(user=""):
-        temp="0001"
-        response = get_recipes()
-        print(response["response"])
-        if response["response"] == "Success":
-                try:
-                        if user != "":
-                                temp = user
+                temp="0001"
+                response = get_recipes()
+                if response["response"] == "Success":
+
+                        if request.method == "POST":
+                                search_str = request.form["search"]
+                                temp_data = []
+                                
+                                for x in response["data"]:
+                                        print(x["recipe"])
+                                        if search_str in x["recipe"]:
+                                                temp_data.append(x)           
                         else:
-                                temp = request.cookies.get("currentUser")
-                        resp = make_response(render_template("index.html", data=response["data"], currentUser=temp), 200)
+                        
+                                temp_data = response["data"]
 
-                except Exception as e:
-                        resp = make_response(render_template("index.html", data=response["data"], currentUser="0001"), 200)
-                        temp = ""
+                        try:
+                                if user != "":
+                                        temp = user
+                                else:
+                                        temp = request.cookies.get("currentUser")
 
-                if user != "":
-                        resp.set_cookie('currentUser', user)
-                elif temp == "":
-                        resp.set_cookie('currentUser', "0001")
+                                resp = make_response(render_template("index.html", data=temp_data, currentUser=temp), 200)
 
-                
-                return resp
-        else:
-                return make_response(render_template("index.html"), 200)
+                        except Exception as e:
+                                resp = make_response(render_template("index.html", data=temp_data, currentUser="0001"), 200)
+                                temp = ""
+
+                        if user != "":
+                                resp.set_cookie('currentUser', user)
+                        elif temp == "":
+                                resp.set_cookie('currentUser', "0001")
+
+                        
+                        return resp
+                else:
+                        return make_response(render_template("index.html"), 200)
+
+
+
 
 
 #dohvati pojedinacni recept
@@ -56,7 +72,6 @@ def recipe(id):
                         print("unsaved")
 
                 if request.method == "POST":
-                        print(request.form["save"])
                         if request.form["save"] == "False":
                                 res = save_recipe(currentUser, id)
                                 saved=True

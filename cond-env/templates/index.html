@@ -19,8 +19,15 @@
 
       </div>
     </div>
-
     <div class="main_wrapper">
+
+      <div class="search-wrapper">
+        <form method="post" class="search-form">
+          <input name="search" style="width: 70%; height: inherit;" value="{{request.form["search"]}}">
+          <button class="button" style="width: 25%; margin-left: 5%; height: inherit;" type="submit">Pretraži</button>
+        </form>
+        </div>
+
       <div class="list">
         {% block content %} {% for d in data %}
         <a href="/recipe/{{d.id}}" class="link-wrapper">

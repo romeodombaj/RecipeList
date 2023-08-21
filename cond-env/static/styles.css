@@ -98,18 +98,37 @@ body {
 }
 
 /* index  */
+
+.search-wrapper {
+  margin-top: 1rem;
+  position: relative;
+  width: 100%;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
+.search-form {
+  width: 80%;
+  margin: auto;
+  height: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .main_wrapper {
   position: relative;
   width: 100%;
-  height: 90vh;
-  margin-top: 8vh;
+  height: calc(90vh);
+  margin-top: 10vh;
 }
 
 .list {
   position: relative;
   width: 100%;
   min-width: 500px;
-  height: 85vh;
+  height: calc(90vh - 5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
