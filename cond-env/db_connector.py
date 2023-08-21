@@ -71,7 +71,7 @@ def add_recipe(recipe, user):
         with orm.db_session:
 
             if hasattr(recipe, "create_date") == False :
-                tempDate = "2023-02-01"
+                tempDate = datetime.now()
             else:
                 tempDate = recipe["create_date"]
 
